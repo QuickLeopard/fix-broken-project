@@ -1,0 +1,136 @@
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded adler2 v2.0.1
+  Downloaded rustc-literal-escaper v0.0.7
+  Downloaded foldhash v0.2.0
+  Downloaded rustc-demangle v0.1.27
+  Downloaded addr2line v0.25.1
+  Downloaded getopts v0.2.24
+  Downloaded miniz_oxide v0.8.9
+  Downloaded gimli v0.32.3
+  Downloaded hashbrown v0.16.1
+  Downloaded object v0.37.3
+   Compiling compiler_builtins v0.1.160 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/compiler-builtins/compiler-builtins)
+   Compiling core v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core)
+   Compiling libc v0.2.178
+   Compiling object v0.37.3
+   Compiling std v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
+   Compiling test v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/test)
+   Compiling proc-macro2 v1.0.103
+   Compiling quote v1.0.42
+   Compiling unicode-ident v1.0.22
+   Compiling serde_core v1.0.228
+   Compiling crossbeam-utils v0.8.21
+   Compiling zerocopy v0.8.31
+   Compiling syn v2.0.111
+   Compiling autocfg v1.5.0
+   Compiling serde v1.0.228
+   Compiling serde_json v1.0.145
+   Compiling num-traits v0.2.19
+   Compiling rayon-core v1.13.0
+   Compiling zerocopy-derive v0.8.31
+   Compiling serde_derive v1.0.228
+   Compiling rustc-std-workspace-core v1.99.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/rustc-std-workspace-core)
+   Compiling alloc v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc)
+   Compiling memchr v2.7.6
+   Compiling unwind v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/unwind)
+   Compiling adler2 v2.0.1
+   Compiling rustc-demangle v0.1.27
+   Compiling panic_abort v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/panic_abort)
+   Compiling cfg-if v1.0.4
+   Compiling rustc-literal-escaper v0.0.7
+   Compiling rustc-std-workspace-alloc v1.99.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/rustc-std-workspace-alloc)
+   Compiling panic_unwind v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/panic_unwind)
+   Compiling gimli v0.32.3
+   Compiling miniz_oxide v0.8.9
+   Compiling std_detect v0.1.5 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std_detect)
+   Compiling hashbrown v0.16.1
+   Compiling addr2line v0.25.1
+   Compiling rustc-std-workspace-std v1.99.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/rustc-std-workspace-std)
+   Compiling proc_macro v0.0.0 (/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/proc_macro)
+   Compiling getopts v0.2.24
+   Compiling crossbeam-epoch v0.9.18
+   Compiling either v1.15.0
+   Compiling crossbeam-deque v0.8.6
+   Compiling regex-syntax v0.8.8
+   Compiling plotters-backend v0.3.7
+   Compiling half v2.7.1
+   Compiling ryu v1.0.20
+   Compiling ciborium-io v0.2.2
+   Compiling clap_lex v0.7.6
+   Compiling anstyle v1.0.13
+   Compiling itoa v1.0.15
+   Compiling clap_builder v4.5.53
+   Compiling ciborium-ll v0.2.2
+   Compiling regex-automata v0.4.13
+   Compiling plotters-svg v0.3.7
+   Compiling itertools v0.10.5
+   Compiling cast v0.3.0
+   Compiling same-file v1.0.6
+   Compiling is-terminal v0.4.17
+   Compiling plotters v0.3.7
+   Compiling walkdir v2.5.0
+   Compiling criterion-plot v0.5.0
+   Compiling rayon v1.11.0
+   Compiling clap v4.5.53
+   Compiling regex v1.12.2
+   Compiling tinytemplate v1.2.1
+   Compiling ciborium v0.2.2
+   Compiling oorandom v11.1.5
+   Compiling once_cell v1.21.3
+   Compiling anes v0.1.6
+   Compiling broken-app v0.1.0 (/app)
+   Compiling criterion v0.5.1
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3m 02s
+     Running tests/integration.rs (target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95)
+
+running 6 tests
+test averages_only_positive ... ok
+test counts_non_zero_bytes ... ok
+test dedup_preserves_uniques ... ok
+test fib_small_numbers ... ok
+test normalize_simple ... ok
+test sums_even_numbers ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+=================================================================
+==1380==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 5 byte(s) in 1 object(s) allocated from:
+    #0 0x55f78ddb5b54  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x328b54) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #1 0x55f78e1f378b  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x76678b) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #2 0x55f78df9a07e  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x50d07e) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #3 0x55f78e26c0cc  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x7df0cc) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #4 0x55f78e26b82a  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x7de82a) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #5 0x55f78e275c2c  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x7e8c2c) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #6 0x55f78e274859  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x7e7859) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #7 0x55f78e276b5b  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x7e9b5b) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #8 0x55f78dde5e4e  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x358e4e) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #9 0x55f78dde5776  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x358776) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #10 0x55f78dee7fca  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x45afca) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #11 0x55f78ddf9ca2  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x36cca2) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #12 0x55f78de1e152  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x391152) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #13 0x55f78de7fd25  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x3f2d25) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #14 0x55f78de8b46a  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x3fe46a) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #15 0x55f78decc643  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x43f643) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #16 0x55f78ddfde4a  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x370e4a) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #17 0x55f78ddfb73a  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x36e73a) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #18 0x55f78ddfbf02  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x36ef02) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #19 0x55f78de7d5ed  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x3f05ed) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #20 0x55f78de1dfee  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x390fee) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #21 0x55f78de7fa95  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x3f2a95) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #22 0x55f78de8b46a  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x3fe46a) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #23 0x55f78decc4b2  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x43f4b2) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #24 0x55f78dec2b28  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x435b28) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #25 0x55f78ddfc8be  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x36f8be) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #26 0x55f78e1f24be  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x7654be) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+    #27 0x55f78ddb3466  (/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95+0x326466) (BuildId: 9f74484598110d1879a69ef897f8784f2592b5be)
+
+SUMMARY: AddressSanitizer: 5 byte(s) leaked in 1 allocation(s).
+error: test failed, to rerun pass `-p broken-app --test integration`
+
+Caused by:
+  process didn't exit successfully: `/app/target/x86_64-unknown-linux-gnu/debug/deps/integration-ab133256d863ac95` (exit status: 1)
+note: test exited abnormally; to see the full output pass --no-capture to the harness.
