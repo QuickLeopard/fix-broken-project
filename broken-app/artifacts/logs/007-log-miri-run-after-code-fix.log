@@ -1,0 +1,40 @@
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running `C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\bin\cargo-miri.exe runner "C:\Users\korn\source\VS Code\Yandex.Practicum\Rust\Sprint 5(Debug + Profiling)\fix-broken-project\target\miri\x86_64-pc-windows-msvc\debug\demo.exe"`
+sum_even: 6
+non-zero bytes: 3
+normalize: helloworld
+fib(20): 6765
+dedup: [1, 2, 3, 4]
+error: memory leaked: alloc1154 (Rust heap, size: 4, align: 1), allocated here:
+   --> C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\raw_vec\mod.rs:465:41
+    |
+465 |             AllocInit::Uninitialized => alloc.allocate(layout),
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: stack backtrace:
+            0: alloc::raw_vec::RawVecInner::try_allocate_in
+                at C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\raw_vec\mod.rs:465:41: 465:63
+            1: alloc::raw_vec::RawVecInner::with_capacity_in
+                at C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\raw_vec\mod.rs:434:15: 434:92
+            2: alloc::raw_vec::RawVec::<u8>::with_capacity_in
+                at C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\raw_vec\mod.rs:177:20: 177:77
+            3: std::vec::Vec::<u8>::with_capacity_in
+                at C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\vec\mod.rs:969:20: 969:61
+            4: <u8 as std::slice::<impl [T]>::to_vec_in::ConvertVec>::to_vec::<std::alloc::Global>
+                at C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\slice.rs:448:29: 448:62
+            5: std::slice::<impl [u8]>::to_vec_in::<std::alloc::Global>
+                at C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\slice.rs:400:16: 400:38
+            6: std::slice::<impl [u8]>::to_vec
+                at C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\lib\rustlib\src\rust\library\alloc\src\slice.rs:376:9: 376:31
+            7: broken_app::leak_buffer
+                at broken-app\src\lib.rs:23:17: 23:31
+            8: main
+                at broken-app\src\bin\demo.rs:8:36: 8:54
+
+note: some details are omitted, run with `MIRIFLAGS=-Zmiri-backtrace=full` for a verbose backtrace
+
+note: set `MIRIFLAGS=-Zmiri-ignore-leaks` to disable this check
+
+error: aborting due to 1 previous error
+
+error: process didn't exit successfully: `C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\bin\cargo-miri.exe runner "C:\Users\korn\source\VS Code\Yandex.Practicum\Rust\Sprint 5(Debug + Profiling)\fix-broken-project\target\miri\x86_64-pc-windows-msvc\debug\demo.exe"` (exit code: 1)
