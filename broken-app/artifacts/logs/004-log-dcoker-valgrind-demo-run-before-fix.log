@@ -1,0 +1,71 @@
+==1== Memcheck, a memory error detector
+==1== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==1== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==1== Command: ./target/debug/demo
+==1== 
+
+thread 'main' (1) panicked at src/lib.rs:11:29:
+unsafe precondition(s) violated: slice::get_unchecked requires that the index is within the slice
+
+This indicates a bug in the program. This Undefined Behavior check is optional, and cannot be relied on for safety.
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+thread caused non-unwinding panic. aborting.
+==1== 
+==1== Process terminating with default action of signal 6 (SIGABRT)
+==1==    at 0x492395C: __pthread_kill_implementation (pthread_kill.c:44)
+==1==    by 0x48CECC1: raise (raise.c:26)
+==1==    by 0x48B74AB: abort (abort.c:77)
+==1==    by 0x13B0D9: std::sys::pal::unix::abort_internal (mod.rs:305)
+==1==    by 0x13F1B8: std::process::abort (process.rs:2533)
+==1==    by 0x13F7E9: std::panicking::panic_with_hook (panicking.rs:0)
+==1==    by 0x13F559: std::panicking::panic_handler::{{closure}} (panicking.rs:691)
+==1==    by 0x13DBB8: std::sys::backtrace::__rust_end_short_backtrace (backtrace.rs:182)
+==1==    by 0x12D9DC: __rustc::rust_begin_unwind (panicking.rs:689)
+==1==    by 0x16C5FC: runtime (panicking.rs:122)
+==1==    by 0x16C5FC: core::panicking::panic_nounwind_fmt (mod.rs:2432)
+==1==    by 0x12D713: <usize as core::slice::index::SliceIndex<[T]>>::get_unchecked::precondition_check (library/core/src/ub_checks.rs:73)
+==1==    by 0x12AE78: <usize as core::slice::index::SliceIndex<[T]>>::get_unchecked (library/core/src/ub_checks.rs:78)
+==1== 
+==1== HEAP SUMMARY:
+==1==     in use at exit: 548 bytes in 2 blocks
+==1==   total heap usage: 9 allocs, 7 frees, 2,620 bytes allocated
+==1== 
+==1== LEAK SUMMARY:
+==1==    definitely lost: 0 bytes in 0 blocks
+==1==    indirectly lost: 0 bytes in 0 blocks
+==1==      possibly lost: 0 bytes in 0 blocks
+==1==    still reachable: 548 bytes in 2 blocks
+==1==         suppressed: 0 bytes in 0 blocks
+==1== Reachable blocks (those to which a pointer was found) are not shown.
+==1== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==1== 
+==1== For lists of detected and suppressed errors, rerun with: -s
+==1== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+valgrind: the 'impossible' happened:
+   main(): signal was supposed to be fatal
+
+host stacktrace:
+==1==    at 0x58044E9A: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==1==    by 0x58044FC7: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==1==    by 0x5804522F: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==1==    by 0x58045250: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==1==    by 0x580B59F1: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==1==    by 0x580ED7DD: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+
+sched status:
+  running_tid=1
+
+
+Note: see also the FAQ in the source distribution.
+It contains workarounds to several common problems.
+In particular, if Valgrind aborted or crashed after
+identifying problems in your program, there's a good chance
+that fixing those problems will prevent Valgrind aborting or
+crashing, especially if it happened in m_mallocfree.c.
+
+If that doesn't help, please report this bug to: www.valgrind.org
+
+In the bug report, send all the above text, the valgrind
+version, and what OS and version you are using.  Thanks.
+
