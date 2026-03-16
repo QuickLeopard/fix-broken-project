@@ -8,6 +8,10 @@ edition = "2024"
 [dev-dependencies]
 criterion = "0.5"
 
+[[test]]
+name = "integration"
+path = "tests/integration.rs"
+
 [[bench]]
 name = "baseline"
 harness = false
