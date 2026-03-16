@@ -1,0 +1,3 @@
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.18s
+     Running `C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\bin\cargo-miri.exe runner "C:\Users\korn\source\VS Code\Yandex.Practicum\Rust\Sprint 5(Debug + Profiling)\fix-broken-project\target\miri\x86_64-pc-windows-msvc\debug\demo.exe"`
+error: process didn't exit successfully: `C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\bin\cargo-miri.exe runner "C:\Users\korn\source\VS Code\Yandex.Practicum\Rust\Sprint 5(Debug + Profiling)\fix-broken-project\target\miri\x86_64-pc-windows-msvc\debug\demo.exe"` (exit code: 0xc000013a, STATUS_CONTROL_C_EXIT)

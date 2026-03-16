@@ -1,0 +1,7 @@
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s
+     Running `C:\Users\korn\.rustup\toolchains\nightly-x86_64-pc-windows-msvc\bin\cargo-miri.exe runner "C:\Users\korn\source\VS Code\Yandex.Practicum\Rust\Sprint 5(Debug + Profiling)\fix-broken-project\target\miri\x86_64-pc-windows-msvc\debug\demo.exe"`
+sum_even: 6
+non-zero bytes: 3
+normalize: helloworld
+fib(20): 6765
+dedup: [1, 2, 3, 4]
