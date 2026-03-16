@@ -4,7 +4,8 @@ RUN rustup toolchain install nightly \
     && rustup component add rust-src --toolchain nightly
 
 WORKDIR /app
-RUN apt-get update && apt-get install -y valgrind && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y valgrind linux-perf && rm -rf /var/lib/apt/lists/*
+RUN cargo install flamegraph
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 COPY benches ./benches

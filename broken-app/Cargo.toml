@@ -15,3 +15,10 @@ path = "tests/integration.rs"
 [[bench]]
 name = "baseline"
 harness = false
+
+[[bench]]
+name = "criterion"
+harness = false
+
+[profile.release]
+debug = true
