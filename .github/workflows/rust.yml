@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.2.2
     - name: Build
       run: cargo build --verbose --workspace
     - name: Clippy
@@ -56,7 +56,7 @@ jobs:
   miri:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.2.2
     - name: Install nightly + Miri
       run: |
         rustup toolchain install nightly --component miri
@@ -68,7 +68,7 @@ jobs:
   valgrind:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.2.2
     - name: Install Valgrind
       run: sudo apt-get update && sudo apt-get install -y valgrind
     - name: Build debug binary
@@ -82,7 +82,7 @@ jobs:
       matrix:
         sanitizer: [address, thread]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.2.2
     - name: Install nightly + rust-src
       run: rustup toolchain install nightly --component rust-src
     - name: Run ${{ matrix.sanitizer }} sanitizer (integration tests)
