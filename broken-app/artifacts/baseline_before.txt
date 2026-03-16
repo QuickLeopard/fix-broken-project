@@ -1,0 +1,20 @@
+warning: unused import: `Duration`
+ --> broken-app\benches\baseline.rs:2:17
+  |
+2 | use std::time::{Duration, Instant};
+  |                 ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `broken-app` (bench "baseline") generated 1 warning (run `cargo fix --bench "baseline" -p broken-app` to apply 1 suggestion)
+    Finished `bench` profile [optimized] target(s) in 0.86s
+     Running benches\baseline.rs (C:\Users\korn\source\VS Code\Yandex.Practicum\Rust\Sprint 5(Debug + Profiling)\fix-broken-project\target\release\deps\baseline-af12c9564356dd40.exe)
+sum_even: 39.5µs
+slow_fib: 19.1105ms
+slow_dedup: 28.926ms
+sum_even: 32.3µs
+slow_fib: 15.3653ms
+slow_dedup: 65.056ms
+sum_even: 30.5µs
+slow_fib: 34.1765ms
+slow_dedup: 99.4545ms

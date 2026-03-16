@@ -1,0 +1,36 @@
+    Finished `bench` profile [optimized] target(s) in 0.35s
+     Running benches\criterion.rs (C:\Users\korn\source\VS Code\Yandex.Practicum\Rust\Sprint 5(Debug + Profiling)\fix-broken-project\target\release\deps\criterion-bc52f1f8f8e56b50.exe)
+Gnuplot not found, using plotters backend
+Benchmarking sum_even_broken
+Benchmarking sum_even_broken: Warming up for 3.0000 s
+Benchmarking sum_even_broken: Collecting 100 samples in estimated 5.0513 s (66k iterations)
+Benchmarking sum_even_broken: Analyzing
+sum_even_broken         time:   [66.430 µs 74.212 µs 85.467 µs]
+                        change: [-12.119% +1.0281% +15.872%] (p = 0.88 > 0.05)
+                        No change in performance detected.
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) high mild
+  1 (1.00%) high severe
+
+Benchmarking slow_fib_broken
+Benchmarking slow_fib_broken: Warming up for 3.0000 s
+Benchmarking slow_fib_broken: Collecting 100 samples in estimated 5.2970 s (200 iterations)
+Benchmarking slow_fib_broken: Analyzing
+slow_fib_broken         time:   [23.287 ms 25.243 ms 27.485 ms]
+                        change: [-16.146% -5.1908% +7.3555%] (p = 0.40 > 0.05)
+                        No change in performance detected.
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high severe
+
+Benchmarking slow_dedup_broken
+Benchmarking slow_dedup_broken: Warming up for 3.0000 s
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 5.2s, or reduce sample count to 90.
+Benchmarking slow_dedup_broken: Collecting 100 samples in estimated 5.1879 s (100 iterations)
+Benchmarking slow_dedup_broken: Analyzing
+slow_dedup_broken       time:   [46.607 ms 49.416 ms 52.278 ms]
+                        change: [-10.306% -2.5121% +6.1730%] (p = 0.54 > 0.05)
+                        No change in performance detected.
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+
