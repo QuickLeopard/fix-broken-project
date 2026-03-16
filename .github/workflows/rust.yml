@@ -85,10 +85,17 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install nightly + rust-src
       run: rustup toolchain install nightly --component rust-src
-    - name: Run ${{ matrix.sanitizer }} sanitizer
+    - name: Run ${{ matrix.sanitizer }} sanitizer (integration tests)
       run: |
         RUSTFLAGS="-Zsanitizer=${{ matrix.sanitizer }}" cargo +nightly test \
           -Zbuild-std \
           --target x86_64-unknown-linux-gnu \
           --package broken-app \
           --test integration
+    - name: Run ${{ matrix.sanitizer }} sanitizer (demo bin)
+      run: |
+        RUSTFLAGS="-Zsanitizer=${{ matrix.sanitizer }}" cargo +nightly run \
+          -Zbuild-std \
+          --target x86_64-unknown-linux-gnu \
+          --package broken-app \
+          --bin demo
