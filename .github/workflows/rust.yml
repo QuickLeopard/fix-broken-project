@@ -140,29 +140,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4.2.2
     - uses: Swatinem/rust-cache@v2
-    - name: Install profiling tools
-      run: |
-        sudo apt-get update && sudo apt-get install -y valgrind linux-tools-common
-        sudo apt-get install -y linux-tools-$(uname -r) 2>/dev/null || sudo apt-get install -y linux-tools-azure
-        sudo sysctl kernel.perf_event_paranoid=-1
-        sudo sysctl kernel.kptr_restrict=0
-        cargo install flamegraph --locked
+    - name: Build profiling image (Debian + linux-perf)
+      run: docker build -f .github/Dockerfile.profiling -t broken-app-profiling .
     - name: Profile and benchmark (slow + optimized)
       run: |
-        PLACEHOLDER_SVG='<svg xmlns="http://www.w3.org/2000/svg"><text x="20" y="24">flamegraph skipped: perf not available on this runner (Ubuntu 24.04 / kernel 6.14). Run scripts/profile.sh or Docker locally for real flamegraphs.</text></svg>'
-        for VARIANT in slow optimized; do
-          [ "$VARIANT" = "optimized" ] && FEATURES="--features optimized" || FEATURES=""
-          echo "$PLACEHOLDER_SVG" > flamegraph_${VARIANT}.svg
-          cargo build --release --package broken-app --bin demo $FEATURES
-          if cargo flamegraph --release --package broken-app --bin demo $FEATURES -o flamegraph_${VARIANT}.svg 2>/dev/null; then
-            echo "flamegraph_${VARIANT}.svg ok"
-          else
-            echo "Skipping flamegraph (perf not available for kernel $(uname -r))"
-          fi
-          valgrind --tool=massif --massif-out-file=massif_${VARIANT}.out ./target/release/demo
-          ms_print massif_${VARIANT}.out > massif_${VARIANT}.txt
-          cargo bench --package broken-app --bench baseline $FEATURES 2>&1 | tee baseline_${VARIANT}.txt
-        done
+        docker run --rm --privileged \
+          -v "$GITHUB_WORKSPACE:/app" -w /app \
+          broken-app-profiling \
+          bash -c '
+            for VARIANT in slow optimized; do
+              [ "$VARIANT" = "optimized" ] && FEATURES="--features optimized" || FEATURES=""
+              cargo build --release --package broken-app --bin demo $FEATURES
+              cargo flamegraph --release --package broken-app --bin demo $FEATURES -o flamegraph_${VARIANT}.svg
+              valgrind --tool=massif --massif-out-file=massif_${VARIANT}.out ./target/release/demo
+              ms_print massif_${VARIANT}.out > massif_${VARIANT}.txt
+              cargo bench --package broken-app --bench baseline $FEATURES 2>&1 | tee baseline_${VARIANT}.txt
+            done
+          '
     - name: Generate profiling report
       if: always()
       run: |
@@ -220,11 +214,7 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### Flamegraph" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        if grep -q 'flamegraph skipped' flamegraph_slow.svg 2>/dev/null; then
-          echo "⚠️ Real flamegraphs are not available on this runner (perf missing for Ubuntu 24.04 / kernel 6.14). SVGs in Artifacts are placeholders. Run \`scripts/profile.sh\` or use the project Docker image locally to generate real flamegraphs." >> $GITHUB_STEP_SUMMARY
-        else
-          echo "Download the SVG flamegraphs from the **Artifacts** tab above. Open in a browser for interactive zoom/search." >> $GITHUB_STEP_SUMMARY
-        fi
+        echo "Download the SVG flamegraphs from the **Artifacts** tab above. Open in a browser for interactive zoom/search." >> $GITHUB_STEP_SUMMARY
     - name: Upload profiling artifacts
       if: always()
       uses: actions/upload-artifact@v4

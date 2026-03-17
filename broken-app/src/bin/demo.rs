@@ -11,7 +11,7 @@ fn main() {
     println!("normalize: {}", normalize(text));
 
     let fib = algo::slow_fib(40);
-    println!("fib(40): {}", fib);
+    println!("fib(40): {fib}");
 
     let dedup_data: Vec<u64> = (0..5_000).flat_map(|n| [n, n]).collect();
     let uniq = algo::slow_dedup(&dedup_data);

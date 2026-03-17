@@ -1,0 +1,11 @@
+# CI-only image for profiling (flamegraph + massif). Uses Debian + linux-perf
+# so perf works; the workspace is mounted at run time.
+FROM rust:1.88.0-bookworm
+
+RUN apt-get update && apt-get install -y \
+        valgrind \
+        linux-perf \
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf "$(ls /usr/bin/perf_* 2>/dev/null | head -1)" /usr/local/bin/perf || true
+
+RUN cargo install flamegraph --locked
