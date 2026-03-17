@@ -146,34 +146,16 @@ jobs:
         sudo sysctl kernel.perf_event_paranoid=-1
         sudo sysctl kernel.kptr_restrict=0
         cargo install flamegraph --locked
-    - name: Profile slow variant
+    - name: Profile and benchmark (slow + optimized)
       run: |
-        cargo build --release --package broken-app --bin demo
-        cargo flamegraph --release --package broken-app --bin demo \
-          -o flamegraph_slow.svg
-        valgrind --tool=massif \
-          --massif-out-file=massif_slow.out \
-          ./target/release/demo
-        ms_print massif_slow.out > massif_slow.txt
-    - name: Benchmark slow variant
-      run: |
-        cargo bench --package broken-app --bench baseline \
-          2>&1 | tee baseline_slow.txt
-    - name: Profile optimized variant
-      run: |
-        cargo build --release --package broken-app --bin demo --features optimized
-        cargo flamegraph --release --package broken-app --bin demo \
-          --features optimized \
-          -o flamegraph_optimized.svg
-        valgrind --tool=massif \
-          --massif-out-file=massif_optimized.out \
-          ./target/release/demo
-        ms_print massif_optimized.out > massif_optimized.txt
-    - name: Benchmark optimized variant
-      run: |
-        cargo bench --package broken-app --bench baseline \
-          --features optimized \
-          2>&1 | tee baseline_optimized.txt
+        for VARIANT in slow optimized; do
+          [ "$VARIANT" = "optimized" ] && FEATURES="--features optimized" || FEATURES=""
+          cargo build --release --package broken-app --bin demo $FEATURES
+          cargo flamegraph --release --package broken-app --bin demo $FEATURES -o flamegraph_${VARIANT}.svg
+          valgrind --tool=massif --massif-out-file=massif_${VARIANT}.out ./target/release/demo
+          ms_print massif_${VARIANT}.out > massif_${VARIANT}.txt
+          cargo bench --package broken-app --bench baseline $FEATURES 2>&1 | tee baseline_${VARIANT}.txt
+        done
     - name: Generate profiling report
       if: always()
       run: |

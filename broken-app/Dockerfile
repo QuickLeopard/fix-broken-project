@@ -1,4 +1,4 @@
-FROM rust:1.86.0-bookworm
+FROM rust:1.88.0-bookworm
 
 RUN rustup toolchain install nightly \
     && rustup component add rust-src --toolchain nightly
