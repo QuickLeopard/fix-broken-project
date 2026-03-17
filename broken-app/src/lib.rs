@@ -13,10 +13,7 @@ pub fn leak_buffer(input: &[u8]) -> usize {
 
 /// Нормализация строки: удаляем все пробельные символы и приводим к нижнему регистру.
 pub fn normalize(input: &str) -> String {
-    input
-        .split_whitespace()
-        .collect::<String>()
-        .to_lowercase()
+    input.split_whitespace().collect::<String>().to_lowercase()
 }
 
 /// Среднее арифметическое только положительных элементов.
@@ -155,4 +152,3 @@ mod tests {
         assert_eq!(use_after_free(), 84);
     }
 }
-

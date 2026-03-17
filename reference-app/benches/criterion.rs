@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
+use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
 use reference_app::{algo, sum_even};
 
 fn bench_sum_even(c: &mut Criterion) {

@@ -13,10 +13,7 @@ pub fn leak_buffer(input: &[u8]) -> usize {
 
 /// Нормализация: убираем все виды пробельных символов и приводим к нижнему регистру.
 pub fn normalize(input: &str) -> String {
-    input
-        .split_whitespace()
-        .collect::<String>()
-        .to_lowercase()
+    input.split_whitespace().collect::<String>().to_lowercase()
 }
 
 /// Корректное усреднение только положительных чисел.

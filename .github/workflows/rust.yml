@@ -142,7 +142,8 @@ jobs:
     - uses: Swatinem/rust-cache@v2
     - name: Install profiling tools
       run: |
-        sudo apt-get update && sudo apt-get install -y valgrind linux-tools-common linux-tools-$(uname -r)
+        sudo apt-get update && sudo apt-get install -y valgrind linux-tools-common
+        sudo apt-get install -y linux-tools-$(uname -r) 2>/dev/null || sudo apt-get install -y linux-tools-azure
         sudo sysctl kernel.perf_event_paranoid=-1
         sudo sysctl kernel.kptr_restrict=0
         cargo install flamegraph --locked
@@ -151,7 +152,12 @@ jobs:
         for VARIANT in slow optimized; do
           [ "$VARIANT" = "optimized" ] && FEATURES="--features optimized" || FEATURES=""
           cargo build --release --package broken-app --bin demo $FEATURES
-          cargo flamegraph --release --package broken-app --bin demo $FEATURES -o flamegraph_${VARIANT}.svg
+          if cargo flamegraph --release --package broken-app --bin demo $FEATURES -o flamegraph_${VARIANT}.svg 2>/dev/null; then
+            echo "flamegraph_${VARIANT}.svg ok"
+          else
+            echo "Skipping flamegraph (perf not available for kernel $(uname -r), known on Ubuntu 24.04/6.14)"
+            echo '<svg xmlns="http://www.w3.org/2000/svg"><text x="20" y="20">flamegraph skipped: perf not available for this kernel</text></svg>' > flamegraph_${VARIANT}.svg
+          fi
           valgrind --tool=massif --massif-out-file=massif_${VARIANT}.out ./target/release/demo
           ms_print massif_${VARIANT}.out > massif_${VARIANT}.txt
           cargo bench --package broken-app --bench baseline $FEATURES 2>&1 | tee baseline_${VARIANT}.txt

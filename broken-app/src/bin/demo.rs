@@ -18,5 +18,8 @@ fn main() {
     println!("dedup len: {}", uniq.len());
 
     let counter = concurrency::race_increment(1_000, 4);
-    println!("race_increment(1000, 4): {}", concurrency::read_counter(&counter));
+    println!(
+        "race_increment(1000, 4): {}",
+        concurrency::read_counter(&counter)
+    );
 }
