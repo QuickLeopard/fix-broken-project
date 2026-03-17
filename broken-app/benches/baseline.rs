@@ -6,7 +6,7 @@ fn time_it(label: &str, mut f: impl FnMut()) {
     let start = Instant::now();
     f();
     let elapsed = start.elapsed();
-    println!("{label}: {:?}", elapsed);
+    println!("{label}: {elapsed:?}");
 }
 
 fn main() {
