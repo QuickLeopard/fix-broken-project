@@ -149,14 +149,15 @@ jobs:
         cargo install flamegraph --locked
     - name: Profile and benchmark (slow + optimized)
       run: |
+        PLACEHOLDER_SVG='<svg xmlns="http://www.w3.org/2000/svg"><text x="20" y="24">flamegraph skipped: perf not available on this runner (Ubuntu 24.04 / kernel 6.14). Run scripts/profile.sh or Docker locally for real flamegraphs.</text></svg>'
         for VARIANT in slow optimized; do
           [ "$VARIANT" = "optimized" ] && FEATURES="--features optimized" || FEATURES=""
+          echo "$PLACEHOLDER_SVG" > flamegraph_${VARIANT}.svg
           cargo build --release --package broken-app --bin demo $FEATURES
           if cargo flamegraph --release --package broken-app --bin demo $FEATURES -o flamegraph_${VARIANT}.svg 2>/dev/null; then
             echo "flamegraph_${VARIANT}.svg ok"
           else
-            echo "Skipping flamegraph (perf not available for kernel $(uname -r), known on Ubuntu 24.04/6.14)"
-            echo '<svg xmlns="http://www.w3.org/2000/svg"><text x="20" y="20">flamegraph skipped: perf not available for this kernel</text></svg>' > flamegraph_${VARIANT}.svg
+            echo "Skipping flamegraph (perf not available for kernel $(uname -r))"
           fi
           valgrind --tool=massif --massif-out-file=massif_${VARIANT}.out ./target/release/demo
           ms_print massif_${VARIANT}.out > massif_${VARIANT}.txt
@@ -185,10 +186,8 @@ jobs:
         echo "| Variant | Peak Heap |" >> $GITHUB_STEP_SUMMARY
         echo "|---|---|" >> $GITHUB_STEP_SUMMARY
 
-        SLOW_PEAK=$(grep -oP 'total\(B\)\s+\K[\d,]+' massif_slow.txt 2>/dev/null \
-          | tr -d ',' | sort -rn | head -1 || echo "N/A")
-        OPT_PEAK=$(grep -oP 'total\(B\)\s+\K[\d,]+' massif_optimized.txt 2>/dev/null \
-          | tr -d ',' | sort -rn | head -1 || echo "N/A")
+        SLOW_PEAK=$(awk 'BEGIN{max=0} /^[[:space:]]+[0-9]+[[:space:]]+[0-9]/{gsub(/,/,"",$3); v=$3+0; if(v>max) max=v} END{print (max>0)?max:"N/A"}' massif_slow.txt 2>/dev/null || echo "N/A")
+        OPT_PEAK=$(awk 'BEGIN{max=0} /^[[:space:]]+[0-9]+[[:space:]]+[0-9]/{gsub(/,/,"",$3); v=$3+0; if(v>max) max=v} END{print (max>0)?max:"N/A"}' massif_optimized.txt 2>/dev/null || echo "N/A")
 
         if [ "$SLOW_PEAK" != "N/A" ]; then
           SLOW_KB=$((SLOW_PEAK / 1024))
@@ -208,21 +207,24 @@ jobs:
         echo "### Massif Top Allocations (slow)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-        awk '/^[0-9]+\.[0-9]+%.*->/{print; count++; if(count>=5) exit}' massif_slow.txt >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "(no data)"
+        awk '/->[0-9]+\.[0-9]+%/{print; count++; if(count>=5) exit}' massif_slow.txt >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "(no data)"
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### Massif Top Allocations (optimized)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-        awk '/^[0-9]+\.[0-9]+%.*->/{print; count++; if(count>=5) exit}' massif_optimized.txt >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "(no data)"
+        awk '/->[0-9]+\.[0-9]+%/{print; count++; if(count>=5) exit}' massif_optimized.txt >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "(no data)"
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### Flamegraph" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Download the SVG flamegraphs from the **Artifacts** tab above." >> $GITHUB_STEP_SUMMARY
-        echo "Open in a browser for interactive zoom/search." >> $GITHUB_STEP_SUMMARY
+        if grep -q 'flamegraph skipped' flamegraph_slow.svg 2>/dev/null; then
+          echo "⚠️ Real flamegraphs are not available on this runner (perf missing for Ubuntu 24.04 / kernel 6.14). SVGs in Artifacts are placeholders. Run \`scripts/profile.sh\` or use the project Docker image locally to generate real flamegraphs." >> $GITHUB_STEP_SUMMARY
+        else
+          echo "Download the SVG flamegraphs from the **Artifacts** tab above. Open in a browser for interactive zoom/search." >> $GITHUB_STEP_SUMMARY
+        fi
     - name: Upload profiling artifacts
       if: always()
       uses: actions/upload-artifact@v4
