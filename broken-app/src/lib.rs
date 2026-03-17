@@ -1,55 +1,26 @@
 pub mod algo;
 pub mod concurrency;
 
-/// Сумма чётных значений.
-/// Здесь намеренно используется `get_unchecked` с off-by-one,
-/// из-за чего возникает UB при доступе за пределы среза.
+/// Сумма чётных значений из среза.
 pub fn sum_even(values: &[i64]) -> i64 {
-    values.iter().filter(|&&v| v % 2 == 0).sum()
-    /*let mut acc = 0;
-    unsafe {
-        for idx in 0..values.len() {
-            let v = *values.get_unchecked(idx);
-            if v % 2 == 0 {
-                acc += v;
-            }
-        }
-    }
-    acc*/
+    values.iter().copied().filter(|v| v & 1 == 0).sum()
 }
 
-/// Подсчёт ненулевых байтов. Буфер намеренно не освобождается,
-/// что приведёт к утечке памяти (Valgrind это покажет).
+/// Подсчёт ненулевых байтов в срезе.
 pub fn leak_buffer(input: &[u8]) -> usize {
     input.iter().filter(|&&b| b != 0).count()
-    /*let boxed = input.to_vec().into_boxed_slice();
-    let len = input.len();
-    let raw = Box::into_raw(boxed) as *mut u8;
-
-    let mut count = 0;
-    unsafe {
-        for i in 0..len {
-            if *raw.add(i) != 0_u8 {
-                count += 1;
-            }
-        }
-        // утечка: не вызываем Box::from_raw(raw);
-    }
-    count*/
 }
 
-/// Небрежная нормализация строки: удаляем пробелы и приводим к нижнему регистру,
-/// но игнорируем повторяющиеся пробелы/табуляции внутри текста.
+/// Нормализация строки: удаляем все пробельные символы и приводим к нижнему регистру.
 pub fn normalize(input: &str) -> String {
-    //input.replace(' ', "").to_lowercase()
     input
         .split_whitespace()
         .collect::<String>()
         .to_lowercase()
 }
 
-/// Логическая ошибка: усредняет по всем элементам, хотя требуется учитывать
-/// только положительные. Деление на длину среза даёт неверный результат.
+/// Среднее арифметическое только положительных элементов.
+/// Возвращает `0.0`, если положительных нет.
 pub fn average_positive(values: &[i64]) -> f64 {
     let only_positive: Vec<i64> = values.iter().filter(|&&x| x > 0).copied().collect();
     if only_positive.is_empty() {
@@ -60,14 +31,13 @@ pub fn average_positive(values: &[i64]) -> f64 {
 }
 
 /// Демонстрация исправленного use-after-free.
-/// Ранее содержал UB (`val + *raw` после освобождения бокса).
-///
-/// # Safety
-///
-/// Caller must ensure no other references to the allocated value exist.
-pub unsafe fn use_after_free() -> i32 {
+/// Создаёт `Box`, читает значение через raw-указатель,
+/// корректно освобождает память и возвращает удвоенное значение.
+pub fn use_after_free() -> i32 {
     let b = Box::new(42_i32);
     let raw = Box::into_raw(b);
+    // SAFETY: `raw` is valid — we just created it via `Box::into_raw`
+    // and haven't freed it yet. We read before dropping.
     unsafe {
         let val = *raw;
         drop(Box::from_raw(raw));
@@ -182,7 +152,7 @@ mod tests {
     #[test]
     fn use_after_free_returns_double() {
         // 42 + 42 = 84, no UB after fix
-        assert_eq!(unsafe { use_after_free() }, 84);
+        assert_eq!(use_after_free(), 84);
     }
 }
 

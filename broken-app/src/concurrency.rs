@@ -1,35 +1,27 @@
+use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::Arc;
 use std::thread;
-use std::time::Duration;
 
-static mut COUNTER: u64 = 0;
-
-/// Небезопасный инкремент через несколько потоков.
-/// Использует global static mut без синхронизации — data race.
-pub fn race_increment(iterations: usize, threads: usize) -> u64 {
-    unsafe { COUNTER = 0; }
-    let mut handles = Vec::new();
+/// Потокобезопасный инкремент через несколько потоков.
+/// Возвращает `Arc<AtomicU64>` — вызовы из разных тестов не мешают друг другу.
+pub fn race_increment(iterations: usize, threads: usize) -> Arc<AtomicU64> {
+    let counter = Arc::new(AtomicU64::new(0));
+    let mut handles = Vec::with_capacity(threads);
     for _ in 0..threads {
+        let counter = Arc::clone(&counter);
         handles.push(thread::spawn(move || {
             for _ in 0..iterations {
-                unsafe {
-                    COUNTER += 1;
-                }
+                counter.fetch_add(1, Ordering::SeqCst);
             }
         }));
     }
     for h in handles {
         let _ = h.join();
     }
-    unsafe { COUNTER }
+    counter
 }
 
-/// Плохая «синхронизация» — просто sleep, возвращает потенциально устаревшее значение.
-pub fn read_after_sleep() -> u64 {
-    thread::sleep(Duration::from_millis(10));
-    unsafe { COUNTER }
-}
-
-/// Сброс счётчика (также небезопасен, без синхронизации).
-pub fn reset_counter() {
-    unsafe { COUNTER = 0; }
+/// Чтение текущего значения счётчика (атомарно).
+pub fn read_counter(counter: &AtomicU64) -> u64 {
+    counter.load(Ordering::SeqCst)
 }

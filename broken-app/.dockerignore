@@ -1,0 +1,9 @@
+target/
+artifacts/
+scripts/
+README.md
+.git/
+.gitignore
+*.svg
+*.out
+*.txt

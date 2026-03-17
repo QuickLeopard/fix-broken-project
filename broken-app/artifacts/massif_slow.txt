@@ -1,0 +1,356 @@
+--------------------------------------------------------------------------------
+Command:            ./target/release/demo
+Massif arguments:   --massif-out-file=/app/target/massif_slow.out
+ms_print arguments: /app/target/massif_slow.out
+--------------------------------------------------------------------------------
+
+
+    KB
+925.0^                                                                      :#
+     |                                                                    :::#
+     |                                                                   @: :#
+     |                                                                   @: :#
+     |@::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::@: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+     |@                                                                  @: :#
+   0 +----------------------------------------------------------------------->Gi
+     0                                                                   3.320
+
+Number of snapshots: 44
+ Detailed snapshots: [5, 15, 22, 32, 38 (peak)]
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  0              0                0                0             0            0
+  1        208,230              488              472            16            0
+  2        208,759              624              592            32            0
+  3        208,911            1,656            1,616            40            0
+  4        217,225            1,768            1,736            32            0
+  5        313,105            1,768            1,736            32            0
+98.19% (1,736B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->57.92% (1,024B) 0x4901DB2: _IO_file_doallocate (filedoalloc.c:101)
+| ->57.92% (1,024B) 0x4910B48: _IO_doallocbuf (genops.c:373)
+|   ->57.92% (1,024B) 0x4910B48: _IO_doallocbuf (genops.c:368)
+|     ->57.92% (1,024B) 0x490E945: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:487)
+|       ->57.92% (1,024B) 0x490376F: getdelim (iogetdelim.c:77)
+|         ->57.92% (1,024B) 0x49181C2: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:122)
+|           ->57.92% (1,024B) 0x12E1DD: get_stack_start (stack_overflow.rs:372)
+|             ->57.92% (1,024B) 0x12E1DD: stack_start_aligned (stack_overflow.rs:389)
+|               ->57.92% (1,024B) 0x12E1DD: install_main_guard_linux (stack_overflow.rs:442)
+|                 ->57.92% (1,024B) 0x12E1DD: install_main_guard (stack_overflow.rs:413)
+|                   ->57.92% (1,024B) 0x12E1DD: init (stack_overflow.rs:155)
+|                     ->57.92% (1,024B) 0x12E1DD: init (mod.rs:41)
+|                       ->57.92% (1,024B) 0x12E1DD: init (rt.rs:118)
+|                         ->57.92% (1,024B) 0x12E1DD: {closure
+|                           ->57.92% (1,024B) 0x12E1DD: do_call<std::rt::lang_start_internal::{closure_env
+|                             ->57.92% (1,024B) 0x12E1DD: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                               ->57.92% (1,024B) 0x12E1DD: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                                 ->57.92% (1,024B) 0x12E1DD: std::rt::lang_start_internal (rt.rs:171)
+|                                   ->57.92% (1,024B) 0x12081B: main (in /app/target/release/demo)
+|                                     
+->26.70% (472B) 0x49028AA: __fopen_internal (iofopen.c:65)
+| ->26.70% (472B) 0x4918092: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:85)
+|   ->26.70% (472B) 0x12E1DD: get_stack_start (stack_overflow.rs:372)
+|     ->26.70% (472B) 0x12E1DD: stack_start_aligned (stack_overflow.rs:389)
+|       ->26.70% (472B) 0x12E1DD: install_main_guard_linux (stack_overflow.rs:442)
+|         ->26.70% (472B) 0x12E1DD: install_main_guard (stack_overflow.rs:413)
+|           ->26.70% (472B) 0x12E1DD: init (stack_overflow.rs:155)
+|             ->26.70% (472B) 0x12E1DD: init (mod.rs:41)
+|               ->26.70% (472B) 0x12E1DD: init (rt.rs:118)
+|                 ->26.70% (472B) 0x12E1DD: {closure
+|                   ->26.70% (472B) 0x12E1DD: do_call<std::rt::lang_start_internal::{closure_env
+|                     ->26.70% (472B) 0x12E1DD: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                       ->26.70% (472B) 0x12E1DD: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                         ->26.70% (472B) 0x12E1DD: std::rt::lang_start_internal (rt.rs:171)
+|                           ->26.70% (472B) 0x12081B: main (in /app/target/release/demo)
+|                             
+->13.57% (240B) 0x49035AE: getdelim (iogetdelim.c:107)
+| ->13.57% (240B) 0x49181C2: pthread_getattr_np@@GLIBC_2.32 (pthread_getattr_np.c:122)
+|   ->13.57% (240B) 0x12E1DD: get_stack_start (stack_overflow.rs:372)
+|     ->13.57% (240B) 0x12E1DD: stack_start_aligned (stack_overflow.rs:389)
+|       ->13.57% (240B) 0x12E1DD: install_main_guard_linux (stack_overflow.rs:442)
+|         ->13.57% (240B) 0x12E1DD: install_main_guard (stack_overflow.rs:413)
+|           ->13.57% (240B) 0x12E1DD: init (stack_overflow.rs:155)
+|             ->13.57% (240B) 0x12E1DD: init (mod.rs:41)
+|               ->13.57% (240B) 0x12E1DD: init (rt.rs:118)
+|                 ->13.57% (240B) 0x12E1DD: {closure
+|                   ->13.57% (240B) 0x12E1DD: do_call<std::rt::lang_start_internal::{closure_env
+|                     ->13.57% (240B) 0x12E1DD: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                       ->13.57% (240B) 0x12E1DD: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                         ->13.57% (240B) 0x12E1DD: std::rt::lang_start_internal (rt.rs:171)
+|                           ->13.57% (240B) 0x12081B: main (in /app/target/release/demo)
+|                             
+->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  6        313,105            1,520            1,496            24            0
+  7        313,303              488              472            16            0
+  8        313,431                0                0             0            0
+  9        313,480               40               32             8            0
+ 10        313,604              208              184            24            0
+ 11        313,656              248              216            32            0
+ 12        313,719              208              184            24            0
+ 13        313,796              168              152            16            0
+ 14        313,825                0                0             0            0
+ 15        314,249               24                4            20            0
+16.67% (4B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->16.67% (4B) 0x12F917: alloc (alloc.rs:95)
+| ->16.67% (4B) 0x12F917: alloc_impl_runtime (alloc.rs:190)
+|   ->16.67% (4B) 0x12F917: alloc_impl (alloc.rs:312)
+|     ->16.67% (4B) 0x12F917: allocate (alloc.rs:429)
+|       ->16.67% (4B) 0x12F917: try_clone_from_ref_in<str, alloc::alloc::Global> (boxed.rs:840)
+|         ->16.67% (4B) 0x12F917: clone_from_ref_in<str, alloc::alloc::Global> (boxed.rs:799)
+|           ->16.67% (4B) 0x12F917: clone_from_ref<str> (boxed.rs:752)
+|             ->16.67% (4B) 0x12F917: from (convert.rs:138)
+|               ->16.67% (4B) 0x12F917: call_once<fn(&str) -> alloc::boxed::Box<str, alloc::alloc::Global>, (&str)> (function.rs:250)
+|                 ->16.67% (4B) 0x12F917: map<&str, alloc::boxed::Box<str, alloc::alloc::Global>, fn(&str) -> alloc::boxed::Box<str, alloc::alloc::Global>> (option.rs:1165)
+|                   ->16.67% (4B) 0x12F917: {closure
+|                     ->16.67% (4B) 0x12F917: {closure
+|                       ->16.67% (4B) 0x12F917: try_with_current<std::thread::current::with_current_name::{closure_env
+|                         ->16.67% (4B) 0x12F917: with_current_name<std::sys::pal::unix::stack_overflow::thread_info::set_current_info::{closure_env
+|                           ->16.67% (4B) 0x12F917: std::sys::pal::unix::stack_overflow::thread_info::set_current_info (thread_info.rs:114)
+|                             ->16.67% (4B) 0x12E30E: init (stack_overflow.rs:179)
+|                               ->16.67% (4B) 0x12E30E: init (mod.rs:41)
+|                                 ->16.67% (4B) 0x12E30E: init (rt.rs:118)
+|                                   ->16.67% (4B) 0x12E30E: {closure
+|                                     ->16.67% (4B) 0x12E30E: do_call<std::rt::lang_start_internal::{closure_env
+|                                       ->16.67% (4B) 0x12E30E: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                                         ->16.67% (4B) 0x12E30E: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                                           ->16.67% (4B) 0x12E30E: std::rt::lang_start_internal (rt.rs:171)
+|                                             ->16.67% (4B) 0x12081B: main (in /app/target/release/demo)
+|                                               
+->00.00% (0B) in 7+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 16        314,336              576              548            28            0
+ 17        314,669          800,584          800,548            36            0
+ 18        952,364          801,616          801,572            44            0
+ 19        954,719          801,640          801,580            60            0
+ 20        955,012          801,640          801,588            52            0
+ 21        955,159          801,664          801,598            66            0
+ 22        955,362          801,664          801,598            66            0
+99.99% (801,598B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->99.79% (800,000B) 0x12044E: alloc (library/alloc/src/alloc.rs:95)
+| ->99.79% (800,000B) 0x12044E: alloc_impl_runtime (library/alloc/src/alloc.rs:190)
+|   ->99.79% (800,000B) 0x12044E: alloc_impl (library/alloc/src/alloc.rs:312)
+|     ->99.79% (800,000B) 0x12044E: allocate (library/alloc/src/alloc.rs:429)
+|       ->99.79% (800,000B) 0x12044E: try_allocate_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:449)
+|         ->99.79% (800,000B) 0x12044E: with_capacity_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:418)
+|           ->99.79% (800,000B) 0x12044E: with_capacity_in<i64, alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:177)
+|             ->99.79% (800,000B) 0x12044E: with_capacity_in<i64, alloc::alloc::Global> (library/alloc/src/vec/mod.rs:967)
+|               ->99.79% (800,000B) 0x12044E: with_capacity<i64> (library/alloc/src/vec/mod.rs:526)
+|                 ->99.79% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/spec_from_iter_nested.rs:52)
+|                   ->99.79% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/spec_from_iter.rs:33)
+|                     ->99.79% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/mod.rs:3801)
+|                       ->99.79% (800,000B) 0x12044E: collect<core::ops::range::Range<i64>, alloc::vec::Vec<i64, alloc::alloc::Global>> (library/core/src/iter/traits/iterator.rs:2035)
+|                         ->99.79% (800,000B) 0x12044E: demo::main (demo.rs:4)
+|                           ->99.79% (800,000B) 0x120412: call_once<fn(), ()> (library/core/src/ops/function.rs:250)
+|                             ->99.79% (800,000B) 0x120412: std::sys::backtrace::__rust_begin_short_backtrace (library/std/src/sys/backtrace.rs:166)
+|                               ->99.79% (800,000B) 0x120408: std::rt::lang_start::{{closure}} (library/std/src/rt.rs:206)
+|                                 ->99.79% (800,000B) 0x12E3D5: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)
+|                                   ->99.79% (800,000B) 0x12E3D5: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:581)
+|                                     ->99.79% (800,000B) 0x12E3D5: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)
+|                                       ->99.79% (800,000B) 0x12E3D5: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)
+|                                         ->99.79% (800,000B) 0x12E3D5: {closure
+|                                           ->99.79% (800,000B) 0x12E3D5: do_call<std::rt::lang_start_internal::{closure_env
+|                                             ->99.79% (800,000B) 0x12E3D5: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                                               ->99.79% (800,000B) 0x12E3D5: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                                                 ->99.79% (800,000B) 0x12E3D5: std::rt::lang_start_internal (rt.rs:171)
+|                                                   ->99.79% (800,000B) 0x12081B: main (in /app/target/release/demo)
+|                                                     
+->00.20% (1,598B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 23        955,362          801,640          801,582            58            0
+ 24        956,283          801,616          801,572            44            0
+ 25  3,351,648,345          881,624          881,572            52            0
+ 26  3,351,667,220          881,664          881,604            60            0
+ 27  3,351,667,624          881,696          881,636            60            0
+ 28  3,351,668,300          881,760          881,700            60            0
+ 29  3,351,670,290          881,888          881,828            60            0
+ 30  3,351,677,560          882,144          882,084            60            0
+ 31  3,351,705,194          882,656          882,596            60            0
+ 32  3,351,812,556          883,680          883,620            60            0
+99.99% (883,620B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->90.53% (800,000B) 0x12044E: alloc (library/alloc/src/alloc.rs:95)
+| ->90.53% (800,000B) 0x12044E: alloc_impl_runtime (library/alloc/src/alloc.rs:190)
+|   ->90.53% (800,000B) 0x12044E: alloc_impl (library/alloc/src/alloc.rs:312)
+|     ->90.53% (800,000B) 0x12044E: allocate (library/alloc/src/alloc.rs:429)
+|       ->90.53% (800,000B) 0x12044E: try_allocate_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:449)
+|         ->90.53% (800,000B) 0x12044E: with_capacity_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:418)
+|           ->90.53% (800,000B) 0x12044E: with_capacity_in<i64, alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:177)
+|             ->90.53% (800,000B) 0x12044E: with_capacity_in<i64, alloc::alloc::Global> (library/alloc/src/vec/mod.rs:967)
+|               ->90.53% (800,000B) 0x12044E: with_capacity<i64> (library/alloc/src/vec/mod.rs:526)
+|                 ->90.53% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/spec_from_iter_nested.rs:52)
+|                   ->90.53% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/spec_from_iter.rs:33)
+|                     ->90.53% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/mod.rs:3801)
+|                       ->90.53% (800,000B) 0x12044E: collect<core::ops::range::Range<i64>, alloc::vec::Vec<i64, alloc::alloc::Global>> (library/core/src/iter/traits/iterator.rs:2035)
+|                         ->90.53% (800,000B) 0x12044E: demo::main (demo.rs:4)
+|                           ->90.53% (800,000B) 0x120412: call_once<fn(), ()> (library/core/src/ops/function.rs:250)
+|                             ->90.53% (800,000B) 0x120412: std::sys::backtrace::__rust_begin_short_backtrace (library/std/src/sys/backtrace.rs:166)
+|                               ->90.53% (800,000B) 0x120408: std::rt::lang_start::{{closure}} (library/std/src/rt.rs:206)
+|                                 ->90.53% (800,000B) 0x12E3D5: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)
+|                                   ->90.53% (800,000B) 0x12E3D5: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:581)
+|                                     ->90.53% (800,000B) 0x12E3D5: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)
+|                                       ->90.53% (800,000B) 0x12E3D5: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)
+|                                         ->90.53% (800,000B) 0x12E3D5: {closure
+|                                           ->90.53% (800,000B) 0x12E3D5: do_call<std::rt::lang_start_internal::{closure_env
+|                                             ->90.53% (800,000B) 0x12E3D5: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                                               ->90.53% (800,000B) 0x12E3D5: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                                                 ->90.53% (800,000B) 0x12E3D5: std::rt::lang_start_internal (rt.rs:171)
+|                                                   ->90.53% (800,000B) 0x12081B: main (in /app/target/release/demo)
+|                                                     
+->09.05% (80,000B) 0x120654: alloc (library/alloc/src/alloc.rs:95)
+| ->09.05% (80,000B) 0x120654: alloc_impl_runtime (library/alloc/src/alloc.rs:190)
+|   ->09.05% (80,000B) 0x120654: alloc_impl (library/alloc/src/alloc.rs:312)
+|     ->09.05% (80,000B) 0x120654: allocate (library/alloc/src/alloc.rs:429)
+|       ->09.05% (80,000B) 0x120654: try_allocate_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:449)
+|         ->09.05% (80,000B) 0x120654: with_capacity_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:418)
+|           ->09.05% (80,000B) 0x120654: with_capacity_in<u64, alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:177)
+|             ->09.05% (80,000B) 0x120654: with_capacity_in<u64, alloc::alloc::Global> (library/alloc/src/vec/mod.rs:967)
+|               ->09.05% (80,000B) 0x120654: with_capacity<u64> (library/alloc/src/vec/mod.rs:526)
+|                 ->09.05% (80,000B) 0x120654: from_iter<u64, core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                   ->09.05% (80,000B) 0x120654: from_iter<u64, core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                     ->09.05% (80,000B) 0x120654: from_iter<u64, core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                       ->09.05% (80,000B) 0x120654: collect<core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                         ->09.05% (80,000B) 0x120654: demo::main (demo.rs:16)
+|                           ->09.05% (80,000B) 0x120412: call_once<fn(), ()> (library/core/src/ops/function.rs:250)
+|                             ->09.05% (80,000B) 0x120412: std::sys::backtrace::__rust_begin_short_backtrace (library/std/src/sys/backtrace.rs:166)
+|                               ->09.05% (80,000B) 0x120408: std::rt::lang_start::{{closure}} (library/std/src/rt.rs:206)
+|                                 ->09.05% (80,000B) 0x12E3D5: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)
+|                                   ->09.05% (80,000B) 0x12E3D5: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:581)
+|                                     ->09.05% (80,000B) 0x12E3D5: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)
+|                                       ->09.05% (80,000B) 0x12E3D5: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)
+|                                         ->09.05% (80,000B) 0x12E3D5: {closure
+|                                           ->09.05% (80,000B) 0x12E3D5: do_call<std::rt::lang_start_internal::{closure_env
+|                                             ->09.05% (80,000B) 0x12E3D5: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                                               ->09.05% (80,000B) 0x12E3D5: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                                                 ->09.05% (80,000B) 0x12E3D5: std::rt::lang_start_internal (rt.rs:171)
+|                                                   ->09.05% (80,000B) 0x12081B: main (in /app/target/release/demo)
+|                                                     
+->00.41% (3,620B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 33  3,352,236,046          885,728          885,668            60            0
+ 34  3,353,918,480          889,824          889,764            60            0
+ 35  3,360,625,554          898,016          897,956            60            0
+ 36  3,387,408,916          914,400          914,340            60            0
+ 37  3,494,452,886          947,168          947,108            60            0
+ 38  3,564,361,912          947,168          947,108            60            0
+99.99% (947,108B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->84.46% (800,000B) 0x12044E: alloc (library/alloc/src/alloc.rs:95)
+| ->84.46% (800,000B) 0x12044E: alloc_impl_runtime (library/alloc/src/alloc.rs:190)
+|   ->84.46% (800,000B) 0x12044E: alloc_impl (library/alloc/src/alloc.rs:312)
+|     ->84.46% (800,000B) 0x12044E: allocate (library/alloc/src/alloc.rs:429)
+|       ->84.46% (800,000B) 0x12044E: try_allocate_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:449)
+|         ->84.46% (800,000B) 0x12044E: with_capacity_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:418)
+|           ->84.46% (800,000B) 0x12044E: with_capacity_in<i64, alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:177)
+|             ->84.46% (800,000B) 0x12044E: with_capacity_in<i64, alloc::alloc::Global> (library/alloc/src/vec/mod.rs:967)
+|               ->84.46% (800,000B) 0x12044E: with_capacity<i64> (library/alloc/src/vec/mod.rs:526)
+|                 ->84.46% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/spec_from_iter_nested.rs:52)
+|                   ->84.46% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/spec_from_iter.rs:33)
+|                     ->84.46% (800,000B) 0x12044E: from_iter<i64, core::ops::range::Range<i64>> (library/alloc/src/vec/mod.rs:3801)
+|                       ->84.46% (800,000B) 0x12044E: collect<core::ops::range::Range<i64>, alloc::vec::Vec<i64, alloc::alloc::Global>> (library/core/src/iter/traits/iterator.rs:2035)
+|                         ->84.46% (800,000B) 0x12044E: demo::main (demo.rs:4)
+|                           ->84.46% (800,000B) 0x120412: call_once<fn(), ()> (library/core/src/ops/function.rs:250)
+|                             ->84.46% (800,000B) 0x120412: std::sys::backtrace::__rust_begin_short_backtrace (library/std/src/sys/backtrace.rs:166)
+|                               ->84.46% (800,000B) 0x120408: std::rt::lang_start::{{closure}} (library/std/src/rt.rs:206)
+|                                 ->84.46% (800,000B) 0x12E3D5: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)
+|                                   ->84.46% (800,000B) 0x12E3D5: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:581)
+|                                     ->84.46% (800,000B) 0x12E3D5: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)
+|                                       ->84.46% (800,000B) 0x12E3D5: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)
+|                                         ->84.46% (800,000B) 0x12E3D5: {closure
+|                                           ->84.46% (800,000B) 0x12E3D5: do_call<std::rt::lang_start_internal::{closure_env
+|                                             ->84.46% (800,000B) 0x12E3D5: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                                               ->84.46% (800,000B) 0x12E3D5: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                                                 ->84.46% (800,000B) 0x12E3D5: std::rt::lang_start_internal (rt.rs:171)
+|                                                   ->84.46% (800,000B) 0x12081B: main (in /app/target/release/demo)
+|                                                     
+->08.45% (80,000B) 0x120654: alloc (library/alloc/src/alloc.rs:95)
+| ->08.45% (80,000B) 0x120654: alloc_impl_runtime (library/alloc/src/alloc.rs:190)
+|   ->08.45% (80,000B) 0x120654: alloc_impl (library/alloc/src/alloc.rs:312)
+|     ->08.45% (80,000B) 0x120654: allocate (library/alloc/src/alloc.rs:429)
+|       ->08.45% (80,000B) 0x120654: try_allocate_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:449)
+|         ->08.45% (80,000B) 0x120654: with_capacity_in<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:418)
+|           ->08.45% (80,000B) 0x120654: with_capacity_in<u64, alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:177)
+|             ->08.45% (80,000B) 0x120654: with_capacity_in<u64, alloc::alloc::Global> (library/alloc/src/vec/mod.rs:967)
+|               ->08.45% (80,000B) 0x120654: with_capacity<u64> (library/alloc/src/vec/mod.rs:526)
+|                 ->08.45% (80,000B) 0x120654: from_iter<u64, core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                   ->08.45% (80,000B) 0x120654: from_iter<u64, core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                     ->08.45% (80,000B) 0x120654: from_iter<u64, core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                       ->08.45% (80,000B) 0x120654: collect<core::iter::adapters::flatten::FlatMap<core::ops::range::Range<u64>, [u64; 2], demo::main::{closure_env
+|                         ->08.45% (80,000B) 0x120654: demo::main (demo.rs:16)
+|                           ->08.45% (80,000B) 0x120412: call_once<fn(), ()> (library/core/src/ops/function.rs:250)
+|                             ->08.45% (80,000B) 0x120412: std::sys::backtrace::__rust_begin_short_backtrace (library/std/src/sys/backtrace.rs:166)
+|                               ->08.45% (80,000B) 0x120408: std::rt::lang_start::{{closure}} (library/std/src/rt.rs:206)
+|                                 ->08.45% (80,000B) 0x12E3D5: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)
+|                                   ->08.45% (80,000B) 0x12E3D5: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:581)
+|                                     ->08.45% (80,000B) 0x12E3D5: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)
+|                                       ->08.45% (80,000B) 0x12E3D5: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)
+|                                         ->08.45% (80,000B) 0x12E3D5: {closure
+|                                           ->08.45% (80,000B) 0x12E3D5: do_call<std::rt::lang_start_internal::{closure_env
+|                                             ->08.45% (80,000B) 0x12E3D5: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|                                               ->08.45% (80,000B) 0x12E3D5: catch_unwind<std::rt::lang_start_internal::{closure_env
+|                                                 ->08.45% (80,000B) 0x12E3D5: std::rt::lang_start_internal (rt.rs:171)
+|                                                   ->08.45% (80,000B) 0x12081B: main (in /app/target/release/demo)
+|                                                     
+->06.92% (65,536B) 0x12140B: realloc (library/alloc/src/alloc.rs:135)
+| ->06.92% (65,536B) 0x12140B: grow_impl_runtime (library/alloc/src/alloc.rs:239)
+|   ->06.92% (65,536B) 0x12140B: grow_impl (library/alloc/src/alloc.rs:342)
+|     ->06.92% (65,536B) 0x12140B: grow (library/alloc/src/alloc.rs:454)
+|       ->06.92% (65,536B) 0x12140B: alloc::raw_vec::RawVecInner<A>::finish_grow (library/alloc/src/raw_vec/mod.rs:540)
+|         ->06.92% (65,536B) 0x121369: grow_amortized<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:512)
+|         | ->06.92% (65,536B) 0x121369: grow_one<alloc::alloc::Global> (library/alloc/src/raw_vec/mod.rs:476)
+|         |   ->06.92% (65,536B) 0x121369: alloc::raw_vec::RawVec<T,A>::grow_one (library/alloc/src/raw_vec/mod.rs:188)
+|         |     ->06.92% (65,536B) 0x120903: push_mut<u64, alloc::alloc::Global> (library/alloc/src/vec/mod.rs:1034)
+|         |       ->06.92% (65,536B) 0x120903: push<u64, alloc::alloc::Global> (library/alloc/src/vec/mod.rs:994)
+|         |         ->06.92% (65,536B) 0x120903: broken_app::algo::slow_dedup (algo.rs:25)
+|         |           ->06.92% (65,536B) 0x1206BC: demo::main (demo.rs:17)
+|         |             ->06.92% (65,536B) 0x120412: call_once<fn(), ()> (library/core/src/ops/function.rs:250)
+|         |               ->06.92% (65,536B) 0x120412: std::sys::backtrace::__rust_begin_short_backtrace (library/std/src/sys/backtrace.rs:166)
+|         |                 ->06.92% (65,536B) 0x120408: std::rt::lang_start::{{closure}} (library/std/src/rt.rs:206)
+|         |                   ->06.92% (65,536B) 0x12E3D5: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)
+|         |                     ->06.92% (65,536B) 0x12E3D5: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:581)
+|         |                       ->06.92% (65,536B) 0x12E3D5: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)
+|         |                         ->06.92% (65,536B) 0x12E3D5: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)
+|         |                           ->06.92% (65,536B) 0x12E3D5: {closure
+|         |                             ->06.92% (65,536B) 0x12E3D5: do_call<std::rt::lang_start_internal::{closure_env
+|         |                               ->06.92% (65,536B) 0x12E3D5: catch_unwind<isize, std::rt::lang_start_internal::{closure_env
+|         |                                 ->06.92% (65,536B) 0x12E3D5: catch_unwind<std::rt::lang_start_internal::{closure_env
+|         |                                   ->06.92% (65,536B) 0x12E3D5: std::rt::lang_start_internal (rt.rs:171)
+|         |                                     ->06.92% (65,536B) 0x12081B: main (in /app/target/release/demo)
+|         |                                       
+|         ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+|         
+->00.17% (1,572B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 39  3,564,361,912          881,624          881,572            52            0
+ 40  3,564,361,945          801,616          801,572            44            0
+ 41  3,564,361,977            1,608            1,572            36            0
+ 42  3,564,362,153              576              548            28            0
+ 43  3,564,362,551              552              544             8            0

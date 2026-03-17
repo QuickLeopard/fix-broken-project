@@ -3,6 +3,9 @@ name = "broken-app"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+optimized = []
+
 [dependencies]
 
 [dev-dependencies]

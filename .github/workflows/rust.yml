@@ -10,36 +10,44 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
+  fmt:
     runs-on: ubuntu-latest
-
+    name: rustfmt
     steps:
     - uses: actions/checkout@v4.2.2
+    - run: cargo fmt --all -- --check
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        features: ["", "optimized"]
+    name: build (${{ matrix.features || 'slow' }})
+    steps:
+    - uses: actions/checkout@v4.2.2
+    - uses: Swatinem/rust-cache@v2
     - name: Build
-      run: cargo build --verbose --workspace
+      run: cargo build --verbose --workspace ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
     - name: Clippy
       id: clippy
       env:
         CARGO_TERM_COLOR: never
       run: |
-        cargo clippy --workspace --all-targets --all-features -- -D warnings 2>&1 | tee clippy.log
-        echo "status=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
-      continue-on-error: true
-    
+        cargo clippy --workspace --all-targets ${{ matrix.features && format('--features {0}', matrix.features) || '' }} -- -D warnings 2>&1 | tee clippy.log
     - name: Run tests
-      run: cargo test --verbose --workspace
-    
+      run: cargo test --verbose --workspace ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
     - name: Generate test report
       if: always()
       run: |
-        echo "## 📊 CI Results" >> $GITHUB_STEP_SUMMARY
+        VARIANT="${{ matrix.features || 'slow' }}"
+        echo "## 📊 CI Results (${VARIANT})" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### ✅ Build Status" >> $GITHUB_STEP_SUMMARY
         echo "Build completed successfully" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 🔍 Clippy Analysis" >> $GITHUB_STEP_SUMMARY
-        if grep -qE "^warning:|^error:" clippy.log; then
+        if [ -f clippy.log ] && grep -qE "^warning:|^error:" clippy.log; then
           ISSUE_COUNT=$(grep -cE "^warning:|^error:" clippy.log || echo "0")
           echo "**Found $ISSUE_COUNT issue(s)**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -55,34 +63,58 @@ jobs:
 
   miri:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        features: ["", "optimized"]
+    name: miri (${{ matrix.features || 'slow' }})
     steps:
     - uses: actions/checkout@v4.2.2
+    - uses: Swatinem/rust-cache@v2
     - name: Install nightly + Miri
       run: |
         rustup toolchain install nightly --component miri
         rustup override set nightly
         cargo miri setup
-    - name: Run Miri
-      run: cargo miri test --package broken-app --test integration
+    - name: Run Miri (unit tests)
+      run: |
+        cargo miri test --package broken-app --lib \
+          ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
+    - name: Run Miri (integration tests)
+      run: |
+        cargo miri test --package broken-app --test integration \
+          ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
 
   valgrind:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        features: ["", "optimized"]
+    name: valgrind (${{ matrix.features || 'slow' }})
     steps:
     - uses: actions/checkout@v4.2.2
+    - uses: Swatinem/rust-cache@v2
     - name: Install Valgrind
       run: sudo apt-get update && sudo apt-get install -y valgrind
     - name: Build debug binary
-      run: cargo build --package broken-app --bin demo
+      run: |
+        cargo build --package broken-app --bin demo \
+          ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
     - name: Run Valgrind
       run: valgrind --leak-check=full --error-exitcode=1 ./target/debug/demo
 
   sanitizers:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         sanitizer: [address, thread]
+        features: ["", "optimized"]
+    name: sanitizer-${{ matrix.sanitizer }} (${{ matrix.features || 'slow' }})
     steps:
     - uses: actions/checkout@v4.2.2
+    - uses: Swatinem/rust-cache@v2
     - name: Install nightly + rust-src
       run: rustup toolchain install nightly --component rust-src
     - name: Run ${{ matrix.sanitizer }} sanitizer (integration tests)
@@ -91,11 +123,130 @@ jobs:
           -Zbuild-std \
           --target x86_64-unknown-linux-gnu \
           --package broken-app \
-          --test integration
+          --test integration \
+          ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
     - name: Run ${{ matrix.sanitizer }} sanitizer (demo bin)
       run: |
         RUSTFLAGS="-Zsanitizer=${{ matrix.sanitizer }}" cargo +nightly run \
           -Zbuild-std \
           --target x86_64-unknown-linux-gnu \
           --package broken-app \
-          --bin demo
+          --bin demo \
+          ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
+
+  profiling:
+    runs-on: ubuntu-latest
+    name: profiling (flamegraph + massif)
+    steps:
+    - uses: actions/checkout@v4.2.2
+    - uses: Swatinem/rust-cache@v2
+    - name: Install profiling tools
+      run: |
+        sudo apt-get update && sudo apt-get install -y valgrind linux-perf
+        sudo sysctl kernel.perf_event_paranoid=-1
+        sudo sysctl kernel.kptr_restrict=0
+        cargo install flamegraph --locked
+    - name: Profile slow variant
+      run: |
+        cargo build --release --package broken-app --bin demo
+        cargo flamegraph --release --package broken-app --bin demo \
+          -o flamegraph_slow.svg
+        valgrind --tool=massif \
+          --massif-out-file=massif_slow.out \
+          ./target/release/demo
+        ms_print massif_slow.out > massif_slow.txt
+    - name: Benchmark slow variant
+      run: |
+        cargo bench --package broken-app --bench baseline \
+          2>&1 | tee baseline_slow.txt
+    - name: Profile optimized variant
+      run: |
+        cargo build --release --package broken-app --bin demo --features optimized
+        cargo flamegraph --release --package broken-app --bin demo \
+          --features optimized \
+          -o flamegraph_optimized.svg
+        valgrind --tool=massif \
+          --massif-out-file=massif_optimized.out \
+          ./target/release/demo
+        ms_print massif_optimized.out > massif_optimized.txt
+    - name: Benchmark optimized variant
+      run: |
+        cargo bench --package broken-app --bench baseline \
+          --features optimized \
+          2>&1 | tee baseline_optimized.txt
+    - name: Generate profiling report
+      if: always()
+      run: |
+        echo "## Profiling Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        echo "### Baseline Benchmarks" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Function | Slow | Optimized |" >> $GITHUB_STEP_SUMMARY
+        echo "|---|---|---|" >> $GITHUB_STEP_SUMMARY
+
+        for func in sum_even slow_fib slow_dedup; do
+          SLOW=$(grep -m1 "${func}" baseline_slow.txt 2>/dev/null | grep -oP ':\s*\K.*' || echo "N/A")
+          OPT=$(grep -m1 "${func}" baseline_optimized.txt 2>/dev/null | grep -oP ':\s*\K.*' || echo "N/A")
+          echo "| \`${func}\` | ${SLOW} | ${OPT} |" >> $GITHUB_STEP_SUMMARY
+        done
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Massif Heap Peak" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Variant | Peak Heap |" >> $GITHUB_STEP_SUMMARY
+        echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+
+        SLOW_PEAK=$(grep -oP 'total\(B\)\s+\K[\d,]+' massif_slow.txt 2>/dev/null \
+          | tr -d ',' | sort -rn | head -1 || echo "N/A")
+        OPT_PEAK=$(grep -oP 'total\(B\)\s+\K[\d,]+' massif_optimized.txt 2>/dev/null \
+          | tr -d ',' | sort -rn | head -1 || echo "N/A")
+
+        if [ "$SLOW_PEAK" != "N/A" ]; then
+          SLOW_KB=$((SLOW_PEAK / 1024))
+          echo "| slow | ${SLOW_PEAK} B (~${SLOW_KB} KB) |" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "| slow | N/A |" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        if [ "$OPT_PEAK" != "N/A" ]; then
+          OPT_KB=$((OPT_PEAK / 1024))
+          echo "| optimized | ${OPT_PEAK} B (~${OPT_KB} KB) |" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "| optimized | N/A |" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Massif Top Allocations (slow)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        awk '/^[0-9]+\.[0-9]+%.*->/{print; count++; if(count>=5) exit}' massif_slow.txt >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "(no data)"
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Massif Top Allocations (optimized)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        awk '/^[0-9]+\.[0-9]+%.*->/{print; count++; if(count>=5) exit}' massif_optimized.txt >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "(no data)"
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Flamegraph" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Download the SVG flamegraphs from the **Artifacts** tab above." >> $GITHUB_STEP_SUMMARY
+        echo "Open in a browser for interactive zoom/search." >> $GITHUB_STEP_SUMMARY
+    - name: Upload profiling artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: profiling-artifacts
+        path: |
+          flamegraph_slow.svg
+          flamegraph_optimized.svg
+          massif_slow.txt
+          massif_slow.out
+          massif_optimized.txt
+          massif_optimized.out
+          baseline_slow.txt
+          baseline_optimized.txt
+        retention-days: 30

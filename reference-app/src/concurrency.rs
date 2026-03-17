@@ -1,5 +1,4 @@
 use std::sync::atomic::{AtomicU64, Ordering};
-use std::sync::Arc;
 use std::thread;
 
 static COUNTER: AtomicU64 = AtomicU64::new(0);

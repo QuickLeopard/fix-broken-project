@@ -1,4 +1,4 @@
-use broken_app::{algo, leak_buffer, normalize, sum_even};
+use broken_app::{algo, concurrency, leak_buffer, normalize, sum_even};
 
 fn main() {
     let nums: Vec<i64> = (0..100_000).collect();
@@ -16,4 +16,7 @@ fn main() {
     let dedup_data: Vec<u64> = (0..5_000).flat_map(|n| [n, n]).collect();
     let uniq = algo::slow_dedup(&dedup_data);
     println!("dedup len: {}", uniq.len());
+
+    let counter = concurrency::race_increment(1_000, 4);
+    println!("race_increment(1000, 4): {}", concurrency::read_counter(&counter));
 }
